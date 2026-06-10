@@ -45,7 +45,11 @@ export async function generateMindSpace(input: string): Promise<MindSpace> {
 
 4. **如果用户信息不全，用合理默认值填充（默认1人、默认经典选项），直接出完整方案。** 不要在 uncertainties 里写"信息不足"。
 
-5. **summary 直接给出最终推荐结论。**
+5. **summary 的写法：先给结论，再自然引导。**
+   格式："推荐XXX。如果想更精准，告诉我你偏好A还是B？"
+   引导语要自然、不啰嗦、给用户选择题（不是开放题）。
+   例："推荐故宫、长城、颐和园三日经典路线。如果想更精准，告诉我你喜欢历史古迹、自然风光还是美食？"
+   例："推荐《三体》和《百年孤独》。如果你想按类型推荐，告诉我喜欢科幻还是文学？"
 
 ## 举例
 
@@ -55,13 +59,7 @@ export async function generateMindSpace(input: string): Promise<MindSpace> {
 - 节点："Day3·颐和园+南锣鼓巷"（类型：concept）
 - 节点："住宿建议·东城区"（类型：concept）
 - 边：Day1 → 顺序 → Day2
-- summary："推荐故宫、长城、颐和园三日经典路线，住东城区"
-
-用户说"推荐几本书"，正确的思维空间应该是：
-- 节点："《三体》刘慈欣"（类型：concept）
-- 节点："《百年孤独》马尔克斯"（类型：concept）
-- 边：无先后关系
-- summary："推荐《三体》和《百年孤独》"
+- summary："推荐故宫、长城、颐和园三日经典路线，住东城区。如果想更精准，告诉我你喜欢历史古迹、自然风光还是美食？"
 
 请严格按照 JSON 格式返回，不要加 markdown 代码块标记。
 
