@@ -11,16 +11,14 @@ interface MindSpaceViewProps {
 
 // 节点类型 → 颜色映射
 const typeColors: Record<string, string> = {
-  concept: '#4A90D9',       // 蓝色 - 概念
+  concept: '#4A90D9',       // 蓝色 - 方案
   inference: '#7B61FF',     // 紫色 - 推理
-  uncertainty: '#FF6B6B',   // 红色 - 不确定
-  question: '#FFB347',      // 橙色 - 问题
+  question: '#FFB347',      // 橙色 - 可调整项
 };
 
 const typeShapes: Record<string, cytoscape.Css.NodeShape> = {
   concept: 'ellipse',
   inference: 'diamond',
-  uncertainty: 'roundrectangle',
   question: 'triangle',
 };
 
@@ -97,15 +95,7 @@ export default function MindSpaceView({ mindSpace, onNodeClick }: MindSpaceViewP
             shape: typeShapes.inference,
           },
         },
-        {
-          selector: 'node.uncertainty',
-          style: {
-            'background-color': typeColors.uncertainty,
-            shape: typeShapes.uncertainty,
-            'border-style': 'dashed',
-            'border-opacity': 1,
-          },
-        },
+
         {
           selector: 'node.question',
           style: {
@@ -197,10 +187,9 @@ export default function MindSpaceView({ mindSpace, onNodeClick }: MindSpaceViewP
       <div className="absolute top-3 left-3 z-10 bg-white/90 backdrop-blur-sm rounded-lg p-2.5 text-xs shadow-sm border">
         <div className="font-semibold mb-1.5 text-gray-700">图例</div>
         {Object.entries({
-          concept: '概念',
+          concept: '方案',
           inference: '推理',
-          uncertainty: '不确定',
-          question: '问题',
+          question: '可调整',
         }).map(([type, label]) => (
           <div key={type} className="flex items-center gap-1.5 mb-1">
             <span
