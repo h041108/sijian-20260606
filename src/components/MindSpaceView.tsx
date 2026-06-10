@@ -159,16 +159,19 @@ export default function MindSpaceView({ mindSpace, onNodeClick }: MindSpaceViewP
         animate: true,
         animationDuration: 800,
         fit: true,
-        padding: 30,
-        nodeRepulsion: 8000,
-        idealEdgeLength: 120,
-        gravity: 1,
+        padding: 80,
+        nodeRepulsion: 35000,
+        nodeOverlap: 100,
+        idealEdgeLength: 200,
+        gravity: 0.6,
+        nestingFactor: 0.8,
+        numIter: 2000,
       },
       // 交互
       userZoomingEnabled: true,
       userPanningEnabled: true,
       boxSelectionEnabled: false,
-      autoungrabify: true, // 禁止拖拽节点
+      autoungrabify: false, // 允许拖拽节点
     });
 
     // 节点点击 → 弹出详情
