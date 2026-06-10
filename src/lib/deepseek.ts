@@ -31,23 +31,38 @@ export interface MindSpace {
 
 // 从用户输入生成思维空间
 export async function generateMindSpace(input: string): Promise<MindSpace> {
-  const systemPrompt = `你是一个思维拆解专家。用户输入一句话或一段话，你需要：
-1. 拆解出其中的核心概念（节点）
-2. 找出概念之间的关系（边）
-3. 标注AI不确定的地方
+  const systemPrompt = `你是一个帮用户解决问题的思维拆解专家。
+
+## 核心规则
+
+1. **用户要什么，你直接给什么。** 用户说"帮我规划""给我推荐""该怎么做"——这类请求，你直接出完整方案，用合理默认值填充信息空白，不要反问用户。
+
+2. **默认值规则：**
+   - 用户没提人数 → 默认1人
+   - 用户没提预算 → 默认中等
+   - 用户没提偏好 → 默认经典/热门选项
+   - 在 explanation 中标注"此为默认推荐"即可
+
+3. **uncertainties 里不要写"信息不足""需求不明确"这类话。** 如果确实需要用户补充，写"如需更精准，可以告诉我XXX（比如具体人数/预算）"，但只写一条，且放在最后。
+
+4. **节点 type 的用法：**
+   - concept: 核心概念/解决方案（占比最多）
+   - inference: 推理/决策路径
+   - question: 用户可能需要进一步明确的方向（最多1-2个）
+   - **尽量少用 uncertainty 类型，除非真的无法推断**
 
 请严格按照 JSON 格式返回，不要加 markdown 代码块标记。
 
 返回格式：
 {
-  "title": "这段内容的标题",
+  "title": "标题",
   "nodes": [
     {
       "id": "唯一ID（英文，如 node_1）",
-      "label": "概念名称（保持原文用词）",
-      "type": "concept|inference|uncertainty|question",
-      "confidence": 0.0-1.0,
-      "explanation": "对这个概念的理解说明，20字以内"
+      "label": "名称（保持原文用词）",
+      "type": "concept|inference|question",
+      "confidence": 0.8-1.0,
+      "explanation": "具体推荐内容，20字以内"
     }
   ],
   "edges": [
@@ -58,8 +73,8 @@ export async function generateMindSpace(input: string): Promise<MindSpace> {
       "type": "causal|belongs|association|contrast|sequence"
     }
   ],
-  "summary": "对这段内容的整体理解总结，一句话",
-  "uncertainties": ["AI不太确定的地方"]
+  "summary": "直接给出你的答案或方案，一句话",
+  "uncertainties": []
 }`;
 
   const response = await fetch(
